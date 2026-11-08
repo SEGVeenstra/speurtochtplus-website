@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+const articles = (await getCollection('articles')).sort((a, b) => +b.data.date - +a.data.date);
+---
+<Base title="Artikelen" description="Tips en inspiratie om je eigen GPS-speurtocht te maken: voor kinderfeestjes, de camping, teambuilding en horeca.">
+  <section>
+    <div class="container">
+      <span class="eyebrow">Artikelen</span>
+      <h1>Tips & inspiratie</h1>
+      <div class="grid">{articles.map((a) => <ArticleCard article={a} />)}</div>
+    </div>
+  </section>
+</Base>
+<style>
+  .grid { display: grid; gap: 1.8rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); margin-top: 2rem; }
+</style>

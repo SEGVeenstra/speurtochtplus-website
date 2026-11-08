@@ -1,0 +1,20 @@
+---
+import { Image } from 'astro:assets';
+import appleBadge from '../assets/app-store-badge.svg';
+import playBadge from '../assets/google-play-badge.png';
+import { site } from '../config';
+---
+<p class="stores">
+  <a href={site.appStoreUrl} target="_blank" rel="noopener" aria-label="Download Speurtocht Plus in de App Store">
+    <img class="apple" src={appleBadge.src} alt="Download in de App Store" />
+  </a>
+  <a href={site.playStoreUrl} target="_blank" rel="noopener" aria-label="Download Speurtocht Plus via Google Play">
+    <Image class="play" src={playBadge} alt="Ontdek het op Google Play" height={64} />
+  </a>
+</p>
+<style>
+  .stores { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem 0.25rem; margin: 0; }
+  .stores a { display: inline-block; line-height: 0; }
+  .stores .apple { height: 48px; width: auto; margin-right: 0.4rem; }
+  .stores :global(.play) { height: 64px; width: auto; }
+</style>

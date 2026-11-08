@@ -1,0 +1,85 @@
+---
+import { site } from '../config';
+---
+<form id="contact-form" class="form" action="https://api.web3forms.com/submit" method="POST">
+  <input type="hidden" name="access_key" value={site.web3formsKey} />
+  <input type="hidden" name="subject" value="Nieuw bericht via speurtochtplus.nl" />
+  <input type="hidden" name="from_name" value="speurtochtplus.nl contactformulier" />
+  <input type="hidden" name="redirect" value="https://www.speurtochtplus.nl/bedankt" />
+  <!-- Spamval: dit veld moet leeg blijven -->
+  <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+  <label>
+    <span>Naam <abbr title="verplicht">*</abbr></span>
+    <input type="text" name="name" required autocomplete="name" />
+  </label>
+  <label>
+    <span>E-mailadres <abbr title="verplicht">*</abbr></span>
+    <input type="email" name="email" required autocomplete="email" />
+  </label>
+  <label>
+    <span>Bericht <abbr title="verplicht">*</abbr></span>
+    <textarea name="message" rows="6" required></textarea>
+  </label>
+  <div class="actions">
+    <button type="submit" class="btn btn-primary">Verzenden</button>
+    <p id="form-status" role="status" aria-live="polite"></p>
+  </div>
+  <p class="alt">Liever mailen? Stuur een bericht naar <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+</form>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.getElementById('form-status');
+  if (form && status) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type=submit]') as HTMLButtonElement;
+      btn.disabled = true;
+      status.textContent = 'Bezig met verzenden…';
+      status.className = '';
+      try {
+        const data = Object.fromEntries(new FormData(form));
+        delete (data as Record<string, unknown>).redirect;
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(data),
+        });
+        const json = await res.json();
+        if (res.ok && json.success) {
+          status.textContent = 'Bedankt! Je bericht is verzonden. Ik neem snel contact met je op.';
+          status.className = 'ok';
+          form.reset();
+        } else {
+          throw new Error(json.message || 'mislukt');
+        }
+      } catch {
+        status.textContent = 'Verzenden is niet gelukt. Probeer het later opnieuw of stuur een e-mail naar het adres hieronder.';
+        status.className = 'err';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  .form { display: grid; gap: 1.1rem; }
+  label { display: grid; gap: 0.35rem; font-weight: 600; font-size: 0.95rem; }
+  abbr { text-decoration: none; color: var(--blue-600); }
+  input[type='text'], input[type='email'], textarea {
+    font: inherit; font-weight: 400; color: var(--ink);
+    background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px;
+    padding: 0.8rem 1rem; width: 100%; transition: border-color .15s, box-shadow .15s;
+  }
+  input:focus, textarea:focus { outline: none; border-color: var(--blue-500); box-shadow: 0 0 0 4px rgb(0 160 255 / 0.2); }
+  textarea { resize: vertical; min-height: 9rem; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .actions p { margin: 0; font-size: 0.95rem; }
+  .actions :global(.ok) { color: #12a150; font-weight: 600; }
+  .actions :global(.err) { color: #d93a3a; font-weight: 600; }
+  button:disabled { opacity: 0.6; cursor: progress; }
+  .alt { color: var(--ink-soft); font-size: 0.95rem; margin: 0; }
+</style>

@@ -1,0 +1,16 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+const page = await getEntry('pages', 'over-ons');
+if (!page) throw new Error('over-ons.md ontbreekt');
+const { Content } = await render(page);
+---
+<Base title="Over ons" description={page.data.description}>
+  <section>
+    <div class="narrow" data-pagefind-body>
+      <span class="eyebrow">Over ons</span>
+      <h1>{page.data.title}</h1>
+      <div class="prose"><Content /></div>
+    </div>
+  </section>
+</Base>

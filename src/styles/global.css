@@ -1,0 +1,93 @@
+@import '@fontsource-variable/nunito';
+@import '@fontsource-variable/fredoka';
+
+:root {
+  --green-500: #10c080;
+  --green-600: #00a15a;
+  --green-700: #007d46;
+  --blue-400: #4cc7f0;
+  --blue-500: #06b0e8;
+  --blue-600: #0889c4;
+  --sky: #6aa9ee;
+  --sun: #ffc933;
+  --coral: #ff6b6b;
+  --navy: #0a2a3b;
+
+  --bg: #f4fbf8;
+  --surface: #ffffff;
+  --surface-2: #e8f6ef;
+  --ink: #0d2b24;
+  --ink-soft: #4a6159;
+  --line: #d3eadf;
+  --link: var(--green-700);
+  --shadow: 0 2px 4px rgb(10 60 40 / 0.06), 0 12px 28px rgb(10 60 40 / 0.1);
+  --radius: 26px;
+  --maxw: 1100px;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #07171a;
+    --surface: #0d2428;
+    --surface-2: #11312a;
+    --ink: #e8f7f0;
+    --ink-soft: #9db8ad;
+    --line: #1b3d38;
+    --link: var(--green-500);
+    --shadow: 0 2px 4px rgb(0 0 0 / 0.4), 0 12px 28px rgb(0 0 0 / 0.35);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: 'Nunito Variable', system-ui, sans-serif; font-size: 1.1rem; line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--link); }
+h1, h2, h3 { font-family: 'Fredoka Variable', 'Nunito Variable', sans-serif; line-height: 1.15; margin: 0 0 0.5em; font-weight: 600; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.3rem, 5.5vw, 3.7rem); }
+h2 { font-size: clamp(1.7rem, 3.4vw, 2.3rem); }
+h3 { font-size: 1.35rem; }
+p { margin: 0 0 1.1em; }
+
+.container { width: min(100% - 2.5rem, var(--maxw)); margin-inline: auto; }
+.narrow { width: min(100% - 2.5rem, 780px); margin-inline: auto; }
+section { padding-block: clamp(3rem, 7vw, 5.5rem); }
+
+.skip-link { position: absolute; left: -999px; top: 0.5rem; z-index: 100; background: var(--navy); color: #fff; padding: 0.6rem 1rem; border-radius: 12px; }
+.skip-link:focus { left: 0.5rem; }
+:focus-visible { outline: 3px solid var(--blue-500); outline-offset: 3px; border-radius: 8px; }
+
+.eyebrow {
+  display: inline-block; font-family: 'Fredoka Variable', sans-serif; font-weight: 500; font-size: 1rem;
+  background: var(--surface-2); color: var(--green-700); padding: 0.25rem 0.9rem; border-radius: 999px; margin-bottom: 1rem;
+}
+@media (prefers-color-scheme: dark) { .eyebrow { color: var(--green-500); } }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.85rem 1.6rem; border-radius: 999px; border: 0; cursor: pointer;
+  font: inherit; font-family: 'Fredoka Variable', sans-serif; font-weight: 500; font-size: 1.1rem; text-decoration: none;
+  transition: transform .15s, box-shadow .15s;
+}
+.btn:hover { transform: translateY(-2px) rotate(-0.5deg); }
+.btn-primary { background: linear-gradient(135deg, var(--blue-500), var(--green-500)); color: #fff; box-shadow: 0 8px 22px rgb(6 176 232 / 0.35); }
+.btn-ghost { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 2px var(--line); }
+.btn-ghost:hover { box-shadow: inset 0 0 0 2px var(--green-500); }
+
+.prose { max-width: 70ch; }
+.prose h2 { margin-top: 1.8em; }
+.prose h3 { margin-top: 1.5em; }
+.prose ul, .prose ol { padding-left: 1.3em; margin: 0 0 1.2em; }
+.prose li { margin-bottom: 0.5em; }
+.prose img { border-radius: 18px; margin: 1.5em auto; box-shadow: var(--shadow); max-height: 70vh; width: auto; max-width: 100%; }
+.prose a { word-break: break-word; }
+.prose strong { color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .btn { transition: none; }
+  .btn:hover { transform: none; }
+}

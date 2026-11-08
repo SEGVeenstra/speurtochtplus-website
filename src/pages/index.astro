@@ -1,0 +1,104 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import StoreBadges from '../components/StoreBadges.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import hero from '../assets/hero.jpg';
+import logo from '../assets/logo.png';
+
+const articles = (await getCollection('articles')).sort((a, b) => +b.data.date - +a.data.date).slice(0, 3);
+const steps = [
+  { n: 1, t: 'Maak', d: 'Geef je speurtocht een naam en omschrijving en voeg GPS-coördinaten toe, eventueel met meerkeuzevragen.' },
+  { n: 2, t: 'Publiceer', d: 'Publiceer je speurtocht. Je betaalt alleen voor het publiceren.' },
+  { n: 3, t: 'Speel', d: 'Spelers scannen de QR-code en kunnen gaan speuren. Spelen is gratis, dus er zit geen limiet aan het aantal spelers!' },
+];
+---
+<Base>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">🧭 De GPS-speurtocht app</span>
+        <h1>Ontdek de wereld op een <span class="mark">speelse</span> manier</h1>
+        <p class="lead">
+          Wij van Speurtocht Plus zijn van mening dat speurtochten leuk zijn voor elke gelegenheid, of het nou voor een kinderfeestje,
+          team-building sessie of activiteit op de camping is. Daarom hebben wij de Speurtocht Plus App ontwikkeld. Met onze app is het
+          heel eenvoudig om zelf GPS-speurtochten te maken.
+        </p>
+        <div class="cta">
+          <a class="btn btn-primary" href="/download">Download de app</a>
+          <a class="btn btn-ghost" href="/artikelen">Lees de artikelen</a>
+        </div>
+      </div>
+      <div class="art">
+        <div class="frame"><Image src={hero} alt="De Speurtocht Plus app met een speurtocht en het digitale kompas" width={900} loading="eager" /></div>
+        <Image class="badge" src={logo} alt="" width={96} height={96} />
+      </div>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="container">
+      <span class="eyebrow">Zo werkt het</span>
+      <h2>De Speurtocht Plus App</h2>
+      <p class="lead2">Met onze speurtocht-app kun je heel eenvoudig en betaalbaar zelf een GPS-speurtocht maken.</p>
+      <ol class="steps">
+        {steps.map((s) => (
+          <li><span class="num">{s.n}</span><h3>{s.t}</h3><p>{s.d}</p></li>
+        ))}
+      </ol>
+      <div class="center"><StoreBadges /></div>
+    </div>
+  </section>
+
+  <section class="latest">
+    <div class="container">
+      <span class="eyebrow">Artikelen</span>
+      <h2>Inspiratie voor jouw speurtocht</h2>
+      <div class="grid">{articles.map((a) => <ArticleCard article={a} />)}</div>
+      <p class="center"><a class="btn btn-ghost" href="/artikelen">Alle artikelen</a></p>
+    </div>
+  </section>
+
+  <section class="help">
+    <div class="narrow panel">
+      <h2>Vragen of hulp nodig?</h2>
+      <p>Heb je vragen over de app of kun je wel wat hulp gebruiken met de app of het maken van een speurtocht? Neem dan contact met ons op.</p>
+      <a class="btn btn-primary" href="/contact">Naar de contactpagina</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { position: relative; overflow: hidden; padding-block: clamp(2.5rem, 7vw, 5rem);
+    background:
+      radial-gradient(800px 500px at 90% 0%, rgb(6 176 232 / 0.25), transparent 60%),
+      radial-gradient(700px 450px at 0% 100%, rgb(16 192 128 / 0.22), transparent 60%); }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: center; }
+  @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } }
+  .mark { background: linear-gradient(transparent 62%, var(--sun) 62%, var(--sun) 92%, transparent 92%); padding: 0 0.1em; }
+  .lead { font-size: 1.2rem; color: var(--ink-soft); }
+  .cta { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 1.6rem; }
+  .art { position: relative; }
+  .frame { border-radius: 36px; overflow: hidden; transform: rotate(2.5deg); box-shadow: 0 24px 50px rgb(6 120 140 / 0.35); border: 6px solid var(--surface); }
+  .frame img { width: 100%; height: auto; }
+  .badge { position: absolute; left: -22px; bottom: -22px; width: 92px; height: 92px; filter: drop-shadow(0 8px 14px rgb(0 80 40 / 0.35)); animation: bob 5s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(-8px) rotate(8deg); } }
+  @media (prefers-reduced-motion: reduce) { .badge { animation: none; } }
+
+  .how { background: var(--surface); border-block: 1px solid var(--line); text-align: center; }
+  .lead2 { color: var(--ink-soft); max-width: 55ch; margin-inline: auto; font-size: 1.15rem; }
+  .steps { list-style: none; padding: 0; margin: 2.5rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; text-align: left; counter-reset: s; }
+  .steps li { background: var(--bg); border: 2px dashed var(--line); border-radius: var(--radius); padding: 1.6rem 1.5rem 1.4rem; position: relative; }
+  .steps li:nth-child(2) { transform: rotate(1deg); } .steps li:nth-child(1) { transform: rotate(-1deg); } .steps li:nth-child(3) { transform: rotate(-0.6deg); }
+  .num { position: absolute; top: -18px; left: 20px; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--blue-500), var(--green-500)); color: #fff; font-family: 'Fredoka Variable', sans-serif; font-weight: 600; font-size: 1.2rem; box-shadow: 0 6px 14px rgb(6 176 232 / 0.4); }
+  .steps h3 { margin-top: 0.3rem; }
+  .steps p { margin: 0; color: var(--ink-soft); }
+  .center { display: flex; justify-content: center; margin-top: 1rem; }
+  .grid { display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin: 1.8rem 0 2rem; }
+  .latest { text-align: left; }
+  .help { padding-top: 0; }
+  .panel { text-align: center; background: linear-gradient(135deg, var(--blue-500), var(--green-500)); color: #fff; border-radius: 34px; padding: clamp(2rem, 5vw, 3.2rem); box-shadow: var(--shadow); }
+  .panel h2 { color: #fff; } .panel p { color: #eafff6; }
+  .panel .btn-primary { background: #fff; color: var(--green-700); box-shadow: 0 8px 20px rgb(0 0 0 / 0.18); }
+</style>

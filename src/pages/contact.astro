@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site } from '../config';
+---
+<Base title="Contact" description="Heb je vragen over de Speurtocht Plus app of hulp nodig bij het maken van een speurtocht? Neem contact met ons op.">
+  <section>
+    <div class="container two">
+      <div>
+        <span class="eyebrow">Contact</span>
+        <h1>Neem contact met ons op</h1>
+        <p>Heb je vragen over de app of kun je wel wat hulp gebruiken met de app of het maken van een speurtocht? Stuur ons een bericht via het formulier.</p>
+        <address>
+          <strong>{site.address.name}</strong>
+          <span>{site.address.street}</span>
+          <span>{site.address.city}</span>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+        </address>
+      </div>
+      <div class="panel"><ContactForm /></div>
+    </div>
+  </section>
+</Base>
+<style>
+  .two { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3rem; align-items: start; }
+  @media (max-width: 860px) { .two { grid-template-columns: 1fr; gap: 1.5rem; } }
+  address { font-style: normal; margin-top: 1.5rem; }
+  address span, address a { display: block; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(1.3rem, 3vw, 2rem); box-shadow: var(--shadow); }
+</style>

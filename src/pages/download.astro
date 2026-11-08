@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import StoreBadges from '../components/StoreBadges.astro';
+import hero from '../assets/hero.jpg';
+---
+<Base title="Download de app" description="Download de Speurtocht Plus app voor iOS en Android en maak eenvoudig en betaalbaar je eigen GPS-speurtocht.">
+  <section>
+    <div class="container layout">
+      <div data-pagefind-body>
+        <span class="eyebrow">Download</span>
+        <h1>De Speurtocht Plus App</h1>
+        <div class="prose">
+          <p>Met onze speurtocht-app kun je heel eenvoudig en betaalbaar zelf een GPS-speurtocht maken.</p>
+          <p>Geef je speurtocht een naam en omschrijving, voeg GPS-coördinaten toe met eventueel meerkeuzevragen en publiceer!</p>
+          <p>Vervolgens scannen de spelers de QR-code en kan er gespeurd worden!</p>
+          <p>Je betaalt alleen voor het publiceren, vervolgens kan iedereen de speurtocht gratis spelen. Er zit dus geen limiet aan het aantal spelers!</p>
+        </div>
+        <StoreBadges />
+        <p class="more">Hulp nodig bij je eerste speurtocht? Lees <a href="/artikelen/zo-maak-je-eenvoudig-je-eigen-gps-speurtocht">hoe je eenvoudig je eigen GPS-speurtocht maakt</a>.</p>
+      </div>
+      <div class="frame"><Image src={hero} alt="De Speurtocht Plus app op twee telefoons" width={900} /></div>
+    </div>
+  </section>
+</Base>
+<style>
+  .layout { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: center; }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } .frame { order: -1; } }
+  .frame { border-radius: 36px; overflow: hidden; transform: rotate(-2deg); box-shadow: 0 24px 50px rgb(6 120 140 / 0.3); border: 6px solid var(--surface); }
+  .frame img { width: 100%; height: auto; }
+  .more { margin-top: 1.5rem; color: var(--ink-soft); }
+</style>
